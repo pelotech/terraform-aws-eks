@@ -172,7 +172,6 @@ data "aws_iam_policy_document" "controller" {
   }
 
   statement {
-    sid       = "AllowRegionalReadActions"
     resources = ["*"]
     actions = [
       "ec2:DescribeCapacityReservations",
@@ -195,13 +194,11 @@ data "aws_iam_policy_document" "controller" {
   }
 
   statement {
-    sid       = "AllowSSMReadActions"
     resources = coalescelist(var.ami_id_ssm_parameter_arns, ["arn:${local.partition}:ssm:${local.region}::parameter/aws/service/*"])
     actions   = ["ssm:GetParameter"]
   }
 
   statement {
-    sid       = "AllowPricingReadActions"
     resources = ["*"]
     actions   = ["pricing:GetProducts"]
   }
@@ -210,7 +207,6 @@ data "aws_iam_policy_document" "controller" {
     for_each = local.enable_spot_termination ? [1] : []
 
     content {
-      sid       = "AllowInterruptionQueueActions"
       resources = [try(aws_sqs_queue.this[0].arn, null)]
       actions = [
         "sqs:DeleteMessage",
@@ -221,7 +217,6 @@ data "aws_iam_policy_document" "controller" {
   }
 
   statement {
-    sid       = "AllowPassingInstanceRole"
     resources = var.create_node_iam_role ? [aws_iam_role.node[0].arn] : [var.node_iam_role_arn]
     actions   = ["iam:PassRole"]
 
@@ -233,7 +228,6 @@ data "aws_iam_policy_document" "controller" {
   }
 
   statement {
-    sid       = "AllowScopedInstanceProfileCreationActions"
     resources = ["arn:${local.partition}:iam::${local.account_id}:instance-profile/*"]
     actions   = ["iam:CreateInstanceProfile"]
 
@@ -263,7 +257,6 @@ data "aws_iam_policy_document" "controller" {
   }
 
   statement {
-    sid       = "AllowScopedInstanceProfileTagActions"
     resources = ["arn:${local.partition}:iam::${local.account_id}:instance-profile/*"]
     actions   = ["iam:TagInstanceProfile"]
 
@@ -311,7 +304,6 @@ data "aws_iam_policy_document" "controller" {
   }
 
   statement {
-    sid       = "AllowScopedInstanceProfileActions"
     resources = ["arn:${local.partition}:iam::${local.account_id}:instance-profile/*"]
     actions = [
       "iam:AddRoleToInstanceProfile",
@@ -339,19 +331,16 @@ data "aws_iam_policy_document" "controller" {
   }
 
   statement {
-    sid       = "AllowInstanceProfileReadActions"
     resources = ["arn:${local.partition}:iam::${local.account_id}:instance-profile/*"]
     actions   = ["iam:GetInstanceProfile"]
   }
 
   statement {
-    sid       = "AllowUnscopedInstanceProfileListAction"
     resources = ["*"]
     actions   = ["iam:ListInstanceProfiles"]
   }
 
   statement {
-    sid       = "AllowAPIServerEndpointDiscovery"
     resources = ["arn:${local.partition}:eks:${local.region}:${local.account_id}:cluster/${var.cluster_name}"]
     actions   = ["eks:DescribeCluster"]
   }
