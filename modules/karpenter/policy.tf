@@ -2,7 +2,6 @@ data "aws_iam_policy_document" "controller" {
   count = local.create_iam_role ? 1 : 0
 
   statement {
-    sid = "AllowScopedEC2InstanceAccessActions"
     resources = [
       "arn:${local.partition}:ec2:${local.region}::image/*",
       "arn:${local.partition}:ec2:${local.region}::snapshot/*",
@@ -18,7 +17,6 @@ data "aws_iam_policy_document" "controller" {
   }
 
   statement {
-    sid = "AllowScopedEC2LaunchTemplateAccessActions"
     resources = [
       "arn:${local.partition}:ec2:${local.region}:*:launch-template/*"
     ]
@@ -42,7 +40,6 @@ data "aws_iam_policy_document" "controller" {
   }
 
   statement {
-    sid = "AllowScopedEC2InstanceActionsWithTags"
     resources = [
       "arn:${local.partition}:ec2:${local.region}:*:fleet/*",
       "arn:${local.partition}:ec2:${local.region}:*:instance/*",
@@ -78,7 +75,6 @@ data "aws_iam_policy_document" "controller" {
   }
 
   statement {
-    sid = "AllowScopedResourceCreationTagging"
     resources = [
       "arn:${local.partition}:ec2:${local.region}:*:fleet/*",
       "arn:${local.partition}:ec2:${local.region}:*:instance/*",
@@ -119,7 +115,6 @@ data "aws_iam_policy_document" "controller" {
   }
 
   statement {
-    sid       = "AllowScopedResourceTagging"
     resources = ["arn:${local.partition}:ec2:${local.region}:*:instance/*"]
     actions   = ["ec2:CreateTags"]
 
@@ -153,7 +148,6 @@ data "aws_iam_policy_document" "controller" {
   }
 
   statement {
-    sid = "AllowScopedDeletion"
     resources = [
       "arn:${local.partition}:ec2:${local.region}:*:instance/*",
       "arn:${local.partition}:ec2:${local.region}:*:launch-template/*"
